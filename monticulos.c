@@ -8,6 +8,10 @@ typedef struct HeapStruct{
 	int *data;
 } Heap;
 
+Heap * Heap_new(int capacity);
+void free_THeap(THeap ** hptr);
+
+
 void Insertar(Heap *h, int data);
 void swap(int *arr, int i, int j);
 int removeMax(Heap *h);
@@ -15,13 +19,13 @@ void topDownHeapify(int *arr, int k,int n);
 void bottomUpHeapify(int *arr, int k);
 int getMax(Heap *h);
 
+Heap * Heap_new(void);
+
 int main() {
 	int par=100,valor,contador=0, valsal;
 
-	Heap *UNO=(Heap*)malloc(sizeof(Heap));
-	UNO->capacity=20;
-	UNO->n=0;
-	UNO->data=(int*)calloc(UNO->capacity,sizeof(int*));
+	Heap *UNO;
+	UNO=Heap_new(20);
 	
 	while(par!=0){
 		printf("--------------------------------------------------------------------------\n");	 			
@@ -136,4 +140,28 @@ void bottomUpHeapify(int *arr, int k){
 			k=k/3;
 		}	
 	}
+}
+
+Heap * Heap_new(int capacity);
+  Heap *UNO = (Heap *) calloc (1,sizeof(Heap));
+  if (UNO == NULL) {
+    printf("Error memoria\n");
+    exit(-1);
+  }
+
+  UNO->capacity = capacity;
+  UNO->n = 0;
+  UNO->data = (int *) calloc (capacity, sizeof(int));
+  if (UNO->data == NULL) {
+    printf("Error memoria\n");
+    exit(-1);
+    }
+
+  return UNO;
+}
+
+void free_Heap(Heap ** hptr){
+  free((*hptr)->data);
+  free(*hptr);
+  hptr = NULL;
 }
