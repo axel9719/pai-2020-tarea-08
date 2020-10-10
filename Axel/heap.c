@@ -37,7 +37,7 @@ void swap(int *arr, int i, int j){
 }
 
 int removeMax(Heap *h){
-	if(h->n<0){
+	if(h->n==0){
 		return -1;
 	}
 	int tmp=h->data[0];
@@ -49,7 +49,7 @@ int removeMax(Heap *h){
 }
 
 int getMax(Heap *h){
-	if(h->n<0){
+	if(h->n==0){
 		return -1;
 	}
 	int tmp=h->data[0];
