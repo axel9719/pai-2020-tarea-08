@@ -60,7 +60,7 @@ void Insertar(Heap *h, int data) {
 	if(h->n==h->capacity-1){
 		return;
 	}
-	h->data[++h->n]=data;
+	h->data[++(h->n)]=data;
 	bottomUpHeapify(h->data, h->n);
 }
 
@@ -71,7 +71,7 @@ void swap(int *arr, int i, int j){
 }
 
 int removeMax(Heap *h){
-	if(h->n==0){
+	if(h->n==-1){
 		return -1;
 	}
 	int tmp=h->data[0];
@@ -83,7 +83,7 @@ int removeMax(Heap *h){
 }
 
 int getMax(Heap *h){
-	if(h->n==0){
+	if(h->n==-1){
 		return -1;
 	}
 	int tmp=h->data[0];
@@ -129,14 +129,14 @@ void bottomUpHeapify(int *arr, int k){
 }
 
 Heap * Heap_new(int capacity){
-	Heap *UNO = (Heap *) calloc (1,sizeof(Heap));
+	Heap *UNO = (Heap *) malloc (sizeof(Heap));
 	if (UNO == NULL) {
 		printf("Error memoria\n");
 		exit(-1);
 	}
 
 	UNO->capacity = capacity;
-  	UNO->n = 0;
+  	UNO->n = -1;
   	UNO->data = (int *) calloc (capacity, sizeof(int));
   	if (UNO->data == NULL) {
     		printf("Error memoria\n");
