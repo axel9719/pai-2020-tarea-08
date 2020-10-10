@@ -9,7 +9,7 @@ typedef struct HeapStruct{
 } Heap;
 
 Heap * Heap_new(int capacity);
-void free_THeap(THeap ** hptr);
+void free_THeap(Heap ** hptr);
 
 
 void Insertar(Heap *h, int data);
@@ -19,7 +19,6 @@ void topDownHeapify(int *arr, int k,int n);
 void bottomUpHeapify(int *arr, int k);
 int getMax(Heap *h);
 
-Heap * Heap_new(void);
 
 int main() {
 	int par=100,valor,contador=0, valsal;
@@ -60,16 +59,9 @@ int main() {
 				printf("Salio: %d\n",valsal);	
 			}
 		}
-		if(par==4){
-			if(contador==0){
-				printf("Arbol vacio\n");
-			}
-			else{
-				imprimir(UNO);
-			}
-		}
+
 		if(par<0 || par>3){
-			printf("Debe de ser 0,1,2,3,4,\n");	
+			printf("Debe de ser 0,1,2,3\n");	
 		}
 		
 	}
@@ -143,25 +135,25 @@ void bottomUpHeapify(int *arr, int k){
 }
 
 Heap * Heap_new(int capacity);
-  Heap *UNO = (Heap *) calloc (1,sizeof(Heap));
-  if (UNO == NULL) {
-    printf("Error memoria\n");
-    exit(-1);
-  }
+	Heap *UNO = (Heap *) calloc (1,sizeof(Heap));
+	if (UNO == NULL) {
+		printf("Error memoria\n");
+		exit(-1);
+	}
 
-  UNO->capacity = capacity;
-  UNO->n = 0;
-  UNO->data = (int *) calloc (capacity, sizeof(int));
-  if (UNO->data == NULL) {
-    printf("Error memoria\n");
-    exit(-1);
-    }
+	UNO->capacity = capacity;
+  	UNO->n = 0;
+  	UNO->data = (int *) calloc (capacity, sizeof(int));
+  	if (UNO->data == NULL) {
+    		printf("Error memoria\n");
+    		exit(-1);
+    	}
 
-  return UNO;
+	return UNO;
 }
 
 void free_Heap(Heap ** hptr){
-  free((*hptr)->data);
-  free(*hptr);
-  hptr = NULL;
+	free((*hptr)->data);
+  	free(*hptr);
+  	hptr = NULL;
 }
