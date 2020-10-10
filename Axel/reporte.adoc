@@ -1,0 +1,16 @@
+= Tarea 08
+:toc:
+
+== Implementación 
+
+=== Pregunta 01
+
+=== Pregunta 02
+
+== Aplicación 
+
+=== Pregunta 03
+
+=== Pregunta 04
+
+=== Pregunta 05
