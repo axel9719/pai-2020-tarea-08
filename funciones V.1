@@ -1,0 +1,95 @@
+typedef struct HeapStruct{
+	unsigned int capacity;
+	unsigned int n;
+	int *data;
+} Heap;
+
+void Insertar(Heap *h, int data);
+void swap(int *arr, int i, int j);
+int removeMax(Heap *h);
+void topDownHeapify(int *arr, int k,int n);
+void bottomUpHeapify(int *arr, int k);
+void getMax (Heap *h);
+
+int main() {
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void Insertar(Heap *h, int data) {
+	if(h->n==h->capacity-1){
+		return;
+	}
+	h->data[++h->n]=data;
+	bottomUpHeapify(h->data, h->n);
+}
+
+void swap(int *arr, int i, int j){
+	int tmp=arr[i];
+	arr[i]=arr[j];
+	arr[j]=tmp;
+}
+
+int removeMax(Heap *h){
+	if(h->n<1){
+		return -1;
+	}
+	int tmp=h->data[0];
+	h->data[0]=h->data[h->n--];
+	topDownHeapify(h->data,0,h->n);
+	return tmp;
+
+
+}
+
+void topDownHeapify(int *arr, int k,int n) {
+	while(3k+1<=n){
+		j=3k+1;
+		if(j<n && arr[j]<arr[j+1]){
+			j++;
+		}
+		if(j<n && arr[j]<arr[j+1]){
+			j++;
+		}
+		if(arr[k]>=arr[j]){
+			break;
+		}
+		swap(arr,k,j);
+		k=j;
+	}
+}
+
+void bottomUpHeapify(int *arr, int k){
+	if(k%3==0){
+		while(k>=1 && arr[(k/3)-1]<arr[k]){
+			swap(arr,k,(k/3)-1);
+			k=(k/3)-1;
+		}
+	}
+	else{
+		while(k>=1 && arr[(k/3)]<arr[k]){
+			swap(arr,k,(k/3));
+			k=k/3;
+		}	
+	}
+}
+
+void getMax (Heap *h){
+
+}
