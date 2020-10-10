@@ -61,9 +61,15 @@ void topDownHeapify(int *arr, int k,int n) {
 		int j=(3*k)+1;
 		if(j<n && arr[j]<arr[j+1]){
 			j++;
+			if(j<n && arr[j]<arr[j+1]){
+				j++;
+			}
+
 		}
-		if(j<n && arr[j]<arr[j+1]){
-			j++;
+		else{
+			if(j+1<n && arr[j]<arr[j+2]){
+				j=j+2;
+			}
 		}
 		if(arr[k]>=arr[j]){
 			break;
