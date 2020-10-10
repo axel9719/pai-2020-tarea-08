@@ -22,6 +22,7 @@ void topDownHeapify(int *arr, int k,int n);
 void bottomUpHeapify(int *arr, int k);
 int getMax(Heap *h);
 
+
 void Insertar(Heap *h, int data) {
 	if(h->n==h->capacity-1){
 		return;
@@ -80,17 +81,9 @@ void topDownHeapify(int *arr, int k,int n) {
 }
 
 void bottomUpHeapify(int *arr, int k){
-	if(k%3==0){
-		while(k>=1 && arr[(k/3)-1]<arr[k]){
-			swap(arr,k,(k/3)-1);
-			k=(k/3)-1;
-		}
-	}
-	else{
-		while(k>=1 && arr[(k/3)]<arr[k]){
-			swap(arr,k,(k/3));
-			k=k/3;
-		}	
+	while(k>=1 && arr[(k-1)/3]<arr[k]){
+		swap(arr,k,(k-1)/3);
+		k=(k-1)/3;
 	}
 }
 
