@@ -38,7 +38,6 @@ int main() {
 			printf("Inserta el valor a añadir al arbol\n");
 			scanf("%d", &valor);
  			Insertar(UNO,valor); 
-			contador=contador+1;
 		}
 		if(par==2){
 			valsal=removeMax(UNO);
