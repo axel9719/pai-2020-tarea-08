@@ -134,7 +134,7 @@ void bottomUpHeapify(int *arr, int k){
 	}
 }
 
-Heap * Heap_new(int capacity);
+Heap * Heap_new(int capacity){
 	Heap *UNO = (Heap *) calloc (1,sizeof(Heap));
 	if (UNO == NULL) {
 		printf("Error memoria\n");
