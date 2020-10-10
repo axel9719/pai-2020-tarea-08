@@ -21,7 +21,7 @@ int getMax(Heap *h);
 
 
 int main() {
-	int par=100,valor,contador=0, valsal;
+	int par=100,valor, valsal;
 
 	Heap *UNO;
 	UNO=Heap_new(20);
@@ -41,23 +41,12 @@ int main() {
 			contador=contador+1;
 		}
 		if(par==2){
-			if(contador==0){
-				printf("Arbol vacio\n");	
-			}
-			else{
-				valsal=removeMax(UNO);
-				printf("Salio: %d\n",valsal);	
-				contador=contador-1;
-			}
+			valsal=removeMax(UNO);
+			printf("Salio: %d\n",valsal);	
 		}
 		if(par==3){
-			if(contador==0){
-				printf("Arbol vacio\n");
-			}
-			else{
- 				valsal=getMax(UNO);
-				printf("Salio: %d\n",valsal);	
-			}
+ 			valsal=getMax(UNO);
+			printf("Salio: %d\n",valsal);	
 		}
 
 		if(par<0 || par>3){
@@ -107,9 +96,15 @@ void topDownHeapify(int *arr, int k,int n) {
 		int j=(3*k)+1;
 		if(j<n && arr[j]<arr[j+1]){
 			j++;
+			if(j<n && arr[j]<arr[j+1]){
+				j++;
+			}
+
 		}
-		if(j<n && arr[j]<arr[j+1]){
-			j++;
+		else{
+			if(j+1<n && arr[j]<arr[j+2]){
+				j=j+2;
+			}
 		}
 		if(arr[k]>=arr[j]){
 			break;
