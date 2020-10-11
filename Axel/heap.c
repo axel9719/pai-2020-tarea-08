@@ -26,15 +26,19 @@ int getMax(Heap *h);
 //Mejor caso, nuevo dato menor que su papa, ningun swap, complejidad constante O(1)
 //Arbol vacio, complejidad constante O(1)
 void Insertar(Heap *h, int data) {
+	//Si se sobrepasa la capacidad establecida, no hacer nada
 	if(h->n==h->capacity-1){
 		return;
 	}
+	//Si no, agregar elemento
 	h->data[++(h->n)]=data;
+	//Arreglar arbol, cumpla propiedades
 	bottomUpHeapify(h->data, h->n);
 }
 
 //Complejidad constante O(1)
 void swap(int *arr, int i, int j){
+	//Cambiar de posicion los elementos del arreglo
 	int tmp=arr[i];
 	arr[i]=arr[j];
 	arr[j]=tmp;
@@ -47,8 +51,11 @@ int removeMax(Heap *h){
 	if(h->n==-1){
 		return -1;
 	}
+	//Por propiedades arbol, elemento maximo en primera entrada	
 	int tmp=h->data[0];
+	//Nueva raiz 
 	h->data[0]=h->data[h->n--];
+	//Arreglar el arbol, para que cumpla las propiedades, padre mayor a hijos.
 	topDownHeapify(h->data,0,h->n);
 	return tmp;
 
@@ -60,6 +67,7 @@ int getMax(Heap *h){
 	if(h->n==-1){
 		return -1;
 	}
+	//Por propiedades arbol, elemento maximo en primera entrada
 	int tmp=h->data[0];
 	return tmp;
 }
@@ -69,21 +77,27 @@ int getMax(Heap *h){
 void topDownHeapify(int *arr, int k,int n) {
 	while((3*k)+1<=n){
 		int j=(3*k)+1;
+		//Revisar si segundo hijo mayor primero
 		if(j<n && arr[j]<arr[j+1]){
 			j++;
+			//Revisar si tercer hijo mayor segundo
 			if(j<n && arr[j]<arr[j+1]){
 				j++;
 			}
 
 		}
+		//Si segundo hijo menor que el primero
 		else{
+			//Revisar si tercer hijo mayor primero
 			if(j+1<n && arr[j]<arr[j+2]){
 				j=j+2;
 			}
 		}
+		//Si padre mayor que hijo, break
 		if(arr[k]>=arr[j]){
 			break;
 		}
+		//Si hijo mayor que padre, cambiarlos de lugar
 		swap(arr,k,j);
 		k=j;
 	}
@@ -98,24 +112,31 @@ void bottomUpHeapify(int *arr, int k){
 	}
 }
 
+//Crear arbol
 Heap * Heap_new(int capacity){
+	//Pedir memoria
 	Heap *UNO = (Heap *) malloc (sizeof(Heap));
+	//Verificar si fue otorgada
 	if (UNO == NULL) {
 		printf("Error memoria\n");
 		exit(-1);
 	}
-
+	//Asignar capacidad
 	UNO->capacity = capacity;
+	//Asignar indice actual, empieza en n=-1, para que al agregar primer elemento, n=0
   	UNO->n = -1;
+	//Memoria para arreglo
   	UNO->data = (int *) calloc (capacity, sizeof(int));
+	//Verificar fue otorgada
   	if (UNO->data == NULL) {
     		printf("Error memoria\n");
     		exit(-1);
     	}
-
+	//Regresar arbol
 	return UNO;
 }
 
+//Liberar memoria de arbol
 void free_Heap(Heap ** hptr){
 	free((*hptr)->data);
   	free(*hptr);
