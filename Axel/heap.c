@@ -1,4 +1,4 @@
-#indef HEAP_T08
+#ifndef HEAP_T08
 #define HEAP_T08
 
 #include <stdio.h>
