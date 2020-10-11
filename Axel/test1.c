@@ -58,6 +58,7 @@ int main() {
 
 void Insertar(Heap *h, int data) {
 	if(h->n==h->capacity-1){
+		printf("Arbol vacio\n");	
 		return;
 	}
 	h->data[++(h->n)]=data;
@@ -72,6 +73,7 @@ void swap(int *arr, int i, int j){
 
 int removeMax(Heap *h){
 	if(h->n==-1){
+		printf("Arbol vacio\n");	
 		return -1;
 	}
 	int tmp=h->data[0];
@@ -84,6 +86,7 @@ int removeMax(Heap *h){
 
 int getMax(Heap *h){
 	if(h->n==-1){
+		printf("Arbol vacio\n");	
 		return -1;
 	}
 	int tmp=h->data[0];
