@@ -45,7 +45,7 @@ int main() {
 		}
 		if(par==3){
  			valsal=getMax(UNO);
-			printf("Salio: %d\n",valsal);	
+			printf("Máximo es: %d\n",valsal);	
 		}
 
 		if(par<0 || par>3){
