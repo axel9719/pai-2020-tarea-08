@@ -22,7 +22,9 @@ void topDownHeapify(int *arr, int k,int n);
 void bottomUpHeapify(int *arr, int k);
 int getMax(Heap *h);
 
-
+//Peor caso,nuevo dato es mayor que su papa, mayor a todos los datos del arbol ,numero de spaws igual a la altura del arbol O(log_3 n)
+//Mejor caso, nuevo dato menor que su papa, ningun swap, complejidad constante O(1)
+//Arbol vacio, complejidad constante O(1)
 void Insertar(Heap *h, int data) {
 	if(h->n==h->capacity-1){
 		return;
@@ -31,12 +33,16 @@ void Insertar(Heap *h, int data) {
 	bottomUpHeapify(h->data, h->n);
 }
 
+//Complejidad constante O(1)
 void swap(int *arr, int i, int j){
 	int tmp=arr[i];
 	arr[i]=arr[j];
 	arr[j]=tmp;
 }
 
+//Arbol vacio, complejidad constante O(1).
+//Mejor caso 1 topDownHeapify
+//Peor caso Intercambio hasta el nodo hoja mas bajo del arbol, O(log_3 n)
 int removeMax(Heap *h){
 	if(h->n==-1){
 		return -1;
@@ -49,6 +55,7 @@ int removeMax(Heap *h){
 
 }
 
+//Complejidad constante O(1), solo verificas la raiz no importa altura del arbol o raiz de este.
 int getMax(Heap *h){
 	if(h->n==-1){
 		return -1;
@@ -57,6 +64,8 @@ int getMax(Heap *h){
 	return tmp;
 }
 
+//Se saca la raiz, el arbol queda vacio, arbol de 1 nodo
+//Tiene que corregir hasta ultimo nodo del arbol, peor caso, O(log_3 n)
 void topDownHeapify(int *arr, int k,int n) {
 	while((3*k)+1<=n){
 		int j=(3*k)+1;
@@ -80,6 +89,8 @@ void topDownHeapify(int *arr, int k,int n) {
 	}
 }
 
+//Peor caso Recorrido desde el noda hasta la raiz O(log_3 n)
+//Mejor caso el hijo satisface propiedades de arbol, menor que el padre ,O(1)
 void bottomUpHeapify(int *arr, int k){
 	while(k>=1 && arr[(k-1)/3]<arr[k]){
 		swap(arr,k,(k-1)/3);
