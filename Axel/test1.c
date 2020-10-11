@@ -18,6 +18,7 @@ int removeMax(Heap *h);
 void topDownHeapify(int *arr, int k,int n);
 void bottomUpHeapify(int *arr, int k);
 int getMax(Heap *h);
+void print_Heap(Heap * h);
 
 
 int main() {
@@ -32,6 +33,8 @@ int main() {
 		printf("1 para insert \n");
 		printf("2 para removeMax\n");
 		printf("3 para getMax\n");
+		printf("4 para saber cuantos datos tiene el montículo \n");
+		printf("5 para imprimir el montículo\n");
 		printf("0 para salir \n");
 		scanf("%d", &par);
 		if(par==1){
@@ -48,10 +51,19 @@ int main() {
 			printf("Máximo es: %d\n",valsal);	
 		}
 
-		if(par<0 || par>3){
-			printf("Debe de ser 0,1,2,3\n");	
+		if(par==4){
+ 			valsal=UNO->n+1;
+			printf("El montículo tiene: %d\n datos",valsal);	
 		}
-		
+
+		if(par==5){
+ 			print_Heap(UNO);
+		}
+
+
+		if(par<0 || par>5){
+			printf("Debe de ser 0,1,2,3,4,5\n");	
+		}
 	}
 	return 0;
 }
@@ -145,4 +157,21 @@ void free_Heap(Heap ** hptr){
 	free((*hptr)->data);
   	free(*hptr);
   	hptr = NULL;
+}
+
+void print_Heap(Heap * h)
+{
+	if(h->n==-1)
+	{
+		printf("El montículo está vacío\n");
+	}
+	else
+	{
+		printf("El monticulo es \n");
+	for (int i=0;i<=h->n;i++){
+		printf("%d ",h->data[i]);
+	}
+	printf("\n");
+	}
+	
 }
