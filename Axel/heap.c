@@ -21,6 +21,7 @@ int removeMax(Heap *h);
 void topDownHeapify(int *arr, int k,int n);
 void bottomUpHeapify(int *arr, int k);
 int getMax(Heap *h);
+void print_Heap(Heap * h); //Función para imprimir el montículo
 
 //Peor caso,nuevo dato es mayor que su papa, mayor a todos los datos del arbol ,numero de spaws igual a la altura del arbol O(log_3 n)
 //Mejor caso, nuevo dato menor que su papa, ningun swap, complejidad constante O(1)
@@ -141,6 +142,26 @@ void free_Heap(Heap ** hptr){
 	free((*hptr)->data);
   	free(*hptr);
   	hptr = NULL;
+}
+
+//Imprimir el montículo
+void print_Heap(Heap * h)
+{
+	//Si el montículo está vacío, lo dice y no imprime ningún dato
+	if(h->n==-1)
+	{
+		printf("El montículo está vacío\n");
+	}
+	//Si el montículo tiene datos, los imprime en una lista ordenada como el arreglo auxiliandose del contador n
+	else
+	{
+		printf("El monticulo es \n");
+	        for (int i=0;i<=h->n;i++){
+			printf("%d ",h->data[i]);
+	        }
+	        printf("\n");
+	}
+	
 }
 
 #endif
