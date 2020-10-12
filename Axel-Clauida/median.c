@@ -82,7 +82,7 @@ else if (max_heap->n-min_heap->n==-1)
 
 
 
-  printf("El nuevo valor de la mediana es %f \n", m[0]);
+  printf("El nuevo valor de la mediana es %.2f \n", m[0]);
   return m[0];
 
 }
