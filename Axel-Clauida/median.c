@@ -8,7 +8,7 @@
 double theap_median(Heap * min_heap, Heap * max_heap, int data, double *m);
 
 // Definiciones ===============================================================
-//Agregué la mediana en int m
+//Agregué la mediana en double *m
 
 double theap_median(Heap * min_heap, Heap * max_heap, int data, double *m){
 
