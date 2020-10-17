@@ -12,9 +12,6 @@ typedef struct _nodo {
 
 tipoNodo *insertar2(int dat,int va, tipoNodo *a);
 
-void inorden(tipoNodo *, void (*func)(int*));
-void preorden(tipoNodo *, void (*func)(int*));
-void postorden(tipoNodo *, void (*func)(int*));
 
 void Imprimir(int *);
 
@@ -50,7 +47,6 @@ int main() {
 			}
 			else{
 				printf("inorden: ");
-				inorden(arbolito, Imprimir);
 				printf("\n");
 				printf("\n");
 			}
@@ -63,7 +59,6 @@ int main() {
 			}
 			else{
 				printf("preorden: ");
-				preorden(arbolito, Imprimir);
 				printf("\n");
 				printf("\n");
 			}
@@ -76,7 +71,6 @@ int main() {
 			}
 			else{
 				printf("postorden: ");
-				postorden(arbolito, Imprimir);
 				printf("\n");
 				printf("\n");
 			}
@@ -115,31 +109,7 @@ tipoNodo *insertar2(int dat,int va, tipoNodo *a) {
 	}
 }
 
-void inorden(tipoNodo *a, void (*func)(int*))
-{
-	if(a->izquierdo) inorden(a->izquierdo, func);
-	func(&(a->key));
-	if(a->derecho) inorden(a->derecho, func);
-}
 
-void preorden(tipoNodo *a, void (*func)(int*))
-{
-	func(&a->key);
-	if(a->izquierdo) preorden(a->izquierdo, func);
-	if(a->derecho) preorden(a->derecho, func);
-}
-
-void postorden(tipoNodo *a, void (*func)(int*))
-{
-	if(a->izquierdo) postorden(a->izquierdo, func);
-	if(a->derecho) postorden(a->derecho, func);
-	func(&a->key);
-}
-
-void Imprimir(int *d)
-{
-	printf("%d, ", *d);
-}
 
 
 
