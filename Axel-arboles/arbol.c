@@ -1,3 +1,7 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+
 #define RED 1
 #define BLACK 0
 
@@ -256,7 +260,5 @@ tipoNodo* put(tipoNodo* root,int k,int v){
 
 	return root;
 }
-
-
 
 
