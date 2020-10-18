@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -8,24 +7,27 @@
 typedef struct _nodo {
 	int key;
 	int val;
+	int color;
+
+	struct _nodo  *papa;
 	struct _nodo *derecho;
 	struct _nodo *izquierdo;
-	struct _nodo  *papa;
-	int color;
+
+
 } tipoNodo;
  
 
 tipoNodo* put(tipoNodo* T,int k,int v);
 int get(tipoNodo *root, int key);
 int vacio(tipoNodo *root);
-
+int size(tipoNodo *root,int contador);
 
 void preorder(tipoNodo *root);
 
 
-void arreglar(tipoNodo** root, tipoNodo** hojita);
-void Rotar_D(tipoNodo** root,tipoNodo** hojita);
-void Rotar_I(tipoNodo** root,tipoNodo** hojita);
+void arreglar(tipoNodo **root, tipoNodo **hojita);
+void Rotar_D(tipoNodo **root,tipoNodo **hojita);
+void Rotar_I(tipoNodo **root,tipoNodo **hojita);
 
 int main() {
 	int valor,llave,adios=2,contador=0;
@@ -111,8 +113,9 @@ void preorder(tipoNodo *root){
 	preorder(root->derecho);
 }
 
-void Rotar_I(tipoNodo** root,tipoNodo** hojita){
-	tipoNodo* hojita2 = (*hojita)->derecho;
+void Rotar_I(tipoNodo **root,tipoNodo **hojita){
+	tipoNodo *hojita2=NULL; 	
+	hojita2 = (*hojita)->derecho;
 	(*hojita)->derecho = hojita2->izquierdo;
 
 	if(hojita2->izquierdo!=NULL){
@@ -125,7 +128,7 @@ void Rotar_I(tipoNodo** root,tipoNodo** hojita){
 		*root = hojita2;
 	}
 	
-	else if(*hojita == (*hojita)->papa->izquierdo){
+	else if((*hojita)->papa->izquierdo == (*hojita)){
 		(*hojita)->papa->izquierdo = hojita2;
 	}
 
@@ -139,8 +142,10 @@ void Rotar_I(tipoNodo** root,tipoNodo** hojita){
 
 }
 
-void Rotar_D(tipoNodo** root,tipoNodo** hojita){
-	tipoNodo* hojita2 = (*hojita)->izquierdo;
+void Rotar_D(tipoNodo **root,tipoNodo **hojita){
+	tipoNodo *hojita2=NULL;
+	hojita2 = (*hojita)->izquierdo;
+
 	(*hojita)->izquierdo = hojita2->derecho;
 
 	if(hojita2->derecho!=NULL){
@@ -153,7 +158,7 @@ void Rotar_D(tipoNodo** root,tipoNodo** hojita){
 		*root = hojita2;
 	}
 
-	else if((*hojita)== (*hojita)->papa->izquierdo){
+	else if((*hojita)->papa->izquierdo == (*hojita)){
 		(*hojita)->papa->izquierdo = hojita2;
 	}
 	else{
@@ -164,16 +169,17 @@ void Rotar_D(tipoNodo** root,tipoNodo** hojita){
 
 }
 
-void arreglar(tipoNodo** root, tipoNodo** hojita){
-	tipoNodo* Abue = NULL;
-	tipoNodo* PPapa = NULL;
+void arreglar(tipoNodo **root, tipoNodo **hojita){
+	tipoNodo *Abue=NULL;
+	tipoNodo *PPapa=NULL;
+	tipoNodo *Tio=NULL;
 
-	while( ( (*hojita)!=*root ) && ( (*hojita)->color!= BLACK ) && ( (*hojita)->papa->color == RED ) ){
+	while( ( (*hojita)!= *root ) && ( (*hojita)->color != BLACK ) && ( (*hojita)->papa->color== RED ) ){
 		PPapa = (*hojita)->papa;
 		Abue = (*hojita)->papa->papa;
 
 		if(PPapa == Abue->izquierdo){
-			tipoNodo* Tio = Abue->derecho;
+			Tio = Abue->derecho;
 
 			if(Tio!=NULL && Tio->color == RED){
 				Abue->color = RED;
@@ -183,7 +189,7 @@ void arreglar(tipoNodo** root, tipoNodo** hojita){
 			}
 
 			else{
-				if((*hojita) == PPapa->derecho){
+				if((*hojita) ==PPapa->derecho){
 					Rotar_I(root,&PPapa);
 					(*hojita) = PPapa;
 					PPapa = (*hojita)->papa;
@@ -197,7 +203,7 @@ void arreglar(tipoNodo** root, tipoNodo** hojita){
 		}
 
 		else{
-			tipoNodo* Tio = Abue->izquierdo;
+			Tio = Abue->izquierdo;
 
 			if(Tio!=NULL && Tio->color == RED){
 				Abue->color = RED;
@@ -224,26 +230,24 @@ void arreglar(tipoNodo** root, tipoNodo** hojita){
 
 }
 
-tipoNodo* put(tipoNodo* root,int k,int v){
+tipoNodo* put(tipoNodo *root,int k,int v){
 
 	tipoNodo* hojita = (tipoNodo*)malloc(sizeof(tipoNodo ));
 	hojita->key = k;
 	hojita->val = v;
-	hojita->izquierdo = NULL;
-	hojita->derecho = NULL;
 	hojita->papa = NULL;
-	hojita->color = RED;
 
-	tipoNodo* a = NULL;
-	tipoNodo* b = root;
+	tipoNodo *a = NULL;
+	tipoNodo *b = root;
 
 	while(b!=NULL){
 		a = b;
-		if(hojita->key < b->key)
+		if(hojita->key < b->key){
 			b = b->izquierdo;
-
-		else
+		}
+		else{
 			b = b->derecho;
+		}
 	}
 	hojita->papa = a;
 
@@ -256,9 +260,13 @@ tipoNodo* put(tipoNodo* root,int k,int v){
 	else{
 		a->derecho = hojita;
 	}
+
+	hojita->izquierdo = NULL;
+	hojita->derecho = NULL;
+	hojita->color = RED;
+
 	arreglar(&root,&hojita);
 
 	return root;
 }
-
 
