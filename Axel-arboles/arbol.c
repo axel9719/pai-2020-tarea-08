@@ -18,7 +18,7 @@ typedef struct _nodo {
 tipoNodo* put(tipoNodo* T,int k,int v);
 int get(tipoNodo *root, int key);
 int vacio(tipoNodo *root);
-int size(tipoNodo *root,int contador);
+
 
 void preorder(tipoNodo *root);
 
