@@ -1,3 +1,8 @@
+/*Respuesta al problema 7 Tarea 9
+Claudia Acosta Díaz y Axel Baez
+Se siguieron los pseudcódigos del Cormen Introduction to Algorithms 3rd edition*/
+/*El árbol almacenará solamente llaves y valores enteros*/
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -6,7 +11,7 @@
 
 //Estructura de nodo del arbol rojo-negro
 typedef struct _nodo {
-  int key;
+  int key; 
   int val;
   struct _nodo *derecho;
   struct _nodo *izquierdo;
@@ -14,35 +19,53 @@ typedef struct _nodo {
   int color;
 } tipoNodo;
 
+//Estructura de árbol rojo-negro
 typedef struct RedBlackTree {
   tipoNodo *root; //Nodo raíz del árbol
   tipoNodo *NIL; //Nodo que está al final, abajo de cada hoja
   int tamano; //guarda el tamaño del arbol
 }RBTree;
  
-
+//Función pedida que inserta un nuevo nodo con cierto bvalor y llave en el árbol
 void put(RBTree *t,int k,int v);
-int get(RBTree *t, int key);
-int vacio(tipoNodo *root);
 
-int contains (RBTree * t , int key ) ; //Is there a data paired with key? //devuelve 0 si está, 1 si no está
+//Función pedida que devuelve un valor asociado a una llave o -1 si no existe tal llave
+int get(RBTree *t, int key);
+
+//Función pedida para saber si el árbol tiene elementos o está vacío
+int vacio(RBTree *t);
+
+//Función pedida para saber si una llave existe en el árbol , devuelve 0 si está, 1 si no está
+int contains (RBTree * t , int key ) ; 
+
+//Función pedida que nos dice la cantidad de nodos NO NIL del árbol
 int size (RBTree * t) ;
 
-void preorder(tipoNodo *root);
+//Función para imprimir el árbol. 
+void preorder(RBTree *t,tipoNodo *r);
 
+//Función auxiliar usadas para la inserción
+void arreglar(RBTree *t, tipoNodo * hojita); //Arregla la estructura rojo-negro después de insertar
 
-void arreglar(RBTree *t, tipoNodo * hojita);
-void Rotar_D(RBTree *t,tipoNodo * hojita);
-void Rotar_I(RBTree *t,tipoNodo * hojita);
+//Funciones auxiliares para la inserción y borrado
+void Rotar_D(RBTree *t,tipoNodo * hojita); //Hace rotación a la derecha
+void Rotar_I(RBTree *t,tipoNodo * hojita); //Hace rotación a la izquierda
 
 //Funciones para hacer delete
-void transplant(RBTree *t, tipoNodo* hojita,tipoNodo *otro);
-void delete(RBTree *t, int key);
-tipoNodo *treeMinimum(RBTree *t,tipoNodo *z);
-void deleteFixUp(RBTree *t,tipoNodo *x);
+void transplant(RBTree *t, tipoNodo* hojita,tipoNodo *otro); //Función para transplantar 
+void delete(RBTree *t, int key); //Función pedida para hacer delete
+tipoNodo *treeMinimum(RBTree *t,tipoNodo *z); //Función que encuentra el mínimo a partir de un nodo
+void deleteFixUp(RBTree *t,tipoNodo *x); //Función que arregla la estructura rojo-negro después de borrar un nodo
 
+//Función auxiliar para liberar la memoria alocada
+void freeArbol(RBTree *t,tipoNodo *r);
+
+
+//Programa principal
 int main() {
-  RBTree *t = malloc(sizeof(RBTree));
+
+  //Lo primero que se hace es crear un árbol
+    RBTree *t = malloc(sizeof(RBTree));
     tipoNodo *nodoNIL = malloc(sizeof(tipoNodo));
     nodoNIL->izquierdo = NULL;
     nodoNIL->izquierdo = NULL;
@@ -54,9 +77,9 @@ int main() {
     t->root = t->NIL;
     t->tamano=0;
 
-  int valor,llave,adios=2,contador=0;
-  //tipoNodo *arbolito = NULL; //*hojita = NULL;
-  printf("Programa Arbol sin repeticiondes de Axel\n");
+  int valor,llave,adios=2,contador=0; //Auxiliares
+  
+  printf("Programa Arbol Rojo-Negro\n");
   while(adios!=0){
     printf("0 Salir\n");
     printf("1 insertar numero\n");
@@ -85,13 +108,13 @@ int main() {
       printf("----------------\n");
     }
     if(adios==3){
-      valor=vacio(t->root);
+      valor=vacio(t);
       printf("Valor: %d\n",valor);      
 
       printf("----------------\n");     
     }
     if(adios==4){
-      preorder(t->root);
+      preorder(t,t->root);
       printf("\n");
       printf("----------------\n");         
     }
@@ -100,12 +123,13 @@ int main() {
           scanf("%d", &llave);
       delete(t,llave);
       printf("\n");
-      printf("----------------\n");         
+      printf("----------------\n");
+      contador=contador-1;         
     }
      if(adios==6){
           
       printf("\n El tamaño del arbol (sin contar los NIL) es %d",size(t));
-      printf("----------------\n");         
+      printf("\n----------------\n");         
     }
 
     if (adios!=0 && adios!=1 && adios!=2 && adios!=3 && adios!=4 && adios!=5 && adios!=6){
@@ -117,10 +141,14 @@ int main() {
       printf("888        88Y88b      88Y88b      888     888   88Y88b\n");   
       printf("888        88  d88     88  d88     Y88b. .d88P   88  d88\n"); 
       printf("8888888    88    d88   88    d88    'Y88888P'    88    d88\n"); 
-      printf("\n");
+      printf("\n Introduzca un nuevo número entre 0 y 6");
     }
     
   } 
+  ;
+  freeArbol(t,t->root);
+  free(t->NIL);
+  free(t);
 }
 
 //Función que busca un elemento. Devuelve -1 si no está, o el valor asociado si el key se encontró
@@ -141,19 +169,21 @@ int get(RBTree *t, int key) {
 }
 
 //Función para saber si el árbol está vacío
-int vacio(tipoNodo *root){
-  return root==NULL;
+int vacio(RBTree *t){
+  return t->root==t->NIL;
 }
 
-void preorder(tipoNodo *root){
-  if(root==NULL)
+//Imprimir el árbol
+void preorder(RBTree *t,tipoNodo *r){
+  if(r==t->NIL)
     return;
 
-  printf("%d ",root->key);
-  preorder(root->izquierdo);
-  preorder(root->derecho);
+  printf("%d ",r->key);
+  preorder(t,r->izquierdo);
+  preorder(t,r->derecho);
 }
 
+//Para rotar a la izquierda
 void Rotar_I(RBTree *t, tipoNodo *hojita){
   tipoNodo * hojita2 = hojita->derecho;
   hojita->derecho = hojita2->izquierdo;
@@ -182,6 +212,7 @@ void Rotar_I(RBTree *t, tipoNodo *hojita){
 
 }
 
+//Para rotar a la derecha
 void Rotar_D(RBTree *t,tipoNodo *hojita){
   tipoNodo *hojita2 = hojita->izquierdo;
   hojita->izquierdo = hojita2->derecho;
@@ -207,6 +238,7 @@ void Rotar_D(RBTree *t,tipoNodo *hojita){
 
 }
 
+//Para arreglar el rojo-negro después de inserción
 void arreglar(RBTree *t, tipoNodo *hojita)
 {
   while(hojita->papa->color == RED) {
@@ -246,7 +278,7 @@ void arreglar(RBTree *t, tipoNodo *hojita)
           Rotar_D(t, hojita);
         }
         hojita->papa->color = BLACK; 
-        hojita->papa->papa->color = RED; //made parent red
+        hojita->papa->papa->color = RED; 
         Rotar_I(t, hojita->papa->papa);
       }
     }
@@ -254,47 +286,75 @@ void arreglar(RBTree *t, tipoNodo *hojita)
   t->root->color = BLACK;
 }
 
-
+//Para insertar una llave y valor en un nuevo nodo
 void put(RBTree *t,int k,int v){
+  
+  //Chequear primero si el nodo no está y se agrega
+  if (get(t,k) == -1)
+  {
+     tipoNodo* hojita = (tipoNodo*)malloc(sizeof(tipoNodo ));
+     hojita->key = k;
+     hojita->val = v;
+     hojita->izquierdo = NULL;
+     hojita->derecho = NULL;
+     hojita->papa = NULL;
+     hojita->color = RED;
 
-  tipoNodo* hojita = (tipoNodo*)malloc(sizeof(tipoNodo ));
-  hojita->key = k;
-  hojita->val = v;
-  hojita->izquierdo = NULL;
-  hojita->derecho = NULL;
-  hojita->papa = NULL;
-  hojita->color = RED;
-
-  tipoNodo* a = t->NIL;
-  tipoNodo* b = t->root;
-
-  while(b!=t->NIL){
+     tipoNodo* a = t->NIL;
+     tipoNodo* b = t->root;
+    while(b!=t->NIL){
     a = b;
     if(hojita->key < b->key)
       b = b->izquierdo;
 
     else
       b = b->derecho;
-  }
-  hojita->papa = a;
-
-  if(a==t->NIL){
+    }
+    hojita->papa = a;
+ 
+    if(a==t->NIL){
     t->root = hojita;
-  }
-  else if(hojita->key < a->key){
+    }
+    else if(hojita->key < a->key){
     a->izquierdo = hojita;
+    }
+    else{
+      a->derecho = hojita;
+    }
+
+    hojita->derecho=t->NIL;
+    hojita->izquierdo=t->NIL;
+    arreglar(t,hojita);
+    t->tamano++;
   }
-  else{
-    a->derecho = hojita;
+  //Si el key ya existe, entonces se sobreescribe val
+  else
+  {
+    tipoNodo *aux = t->root;
+     
+   //subrutina para encontrar el nodo que contiene Key y cambiar su VAL
+    //Se hace esto porque en clase se dijo que en estos árboles si un key ya existía
+    //Y se ponía otra vez, entonces se aplastaba el valor asociado y se ponía el nuevo
+  while (aux != t->NIL) {
+    if (k == aux->key){ 
+      aux->val=v;
+      break;
+    }
+    else if (k<aux->key){
+      aux = aux->izquierdo;
+    }
+    else{
+      aux = aux->derecho;
+    }
   }
 
-  hojita->derecho=t->NIL;
-  hojita->izquierdo=t->NIL;
-  arreglar(t,hojita);
-  t->tamano++;
+  }
+
+  
 
 }
 
+//Transplantar
 void transplant(RBTree *t, tipoNodo* u, tipoNodo *v)
 {
   if(u->papa == t->NIL)
@@ -313,7 +373,7 @@ void transplant(RBTree *t, tipoNodo* u, tipoNodo *v)
     v->papa = u->papa;
 }
 
-
+//Encontrar mínimo después de un nodo
 tipoNodo *treeMinimum(RBTree *t, tipoNodo *z)
 {
   while (z->izquierdo != t->NIL)
@@ -323,6 +383,7 @@ tipoNodo *treeMinimum(RBTree *t, tipoNodo *z)
   return z;
 }
 
+//Arreglar rojo-negro después de delete
 void deleteFixUp(RBTree *t, tipoNodo *x)
 {
 
@@ -383,12 +444,13 @@ void deleteFixUp(RBTree *t, tipoNodo *x)
   x->color = BLACK;
 }
 
+//Borrar un nodo 
 void delete(RBTree *t, int key) {
     
     tipoNodo *aux = t->root;
     tipoNodo *z=t->NIL;
   
-  //Función para encontrar el nodo que contiene Key
+  //subrutina para encontrar el nodo que contiene Key
   while (aux != t->NIL) {
     if (key == aux->key){ 
       z=aux;
@@ -440,8 +502,10 @@ void delete(RBTree *t, int key) {
   if(y_orignal_color == BLACK)
     deleteFixUp(t, x);
   t->tamano--;
+  free(z); //Libero el nodo que se borró
 }
 
+//Contiene un key??
 int contains (RBTree * t , int key )
 {
   tipoNodo *x = t->root;
@@ -459,7 +523,23 @@ int contains (RBTree * t , int key )
   return 1;
 }
 
+//Número de nodos distintos de NIL
 int size (RBTree * t)
 {
   return t->tamano;
+}
+
+//Liberar la memoria que se alocó para el árbol
+void freeArbol(RBTree *t,tipoNodo *root)
+{
+    
+    if (root==t->NIL)
+      return;
+
+    freeArbol(t,root->izquierdo);
+    freeArbol(t,root->derecho);
+   
+    free(root);
+
+    return;
 }
